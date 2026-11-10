@@ -13,6 +13,7 @@ android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,POST
 android.api = 33
 android.minapi = 21
 android.ndk_api = 21
+android.ndk = 25b
 android.accept_sdk_license = True
 android.request_legacy_external_storage = True
 android.app_name = FIT Download

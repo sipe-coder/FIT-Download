@@ -36,6 +36,11 @@ jobs:
             .buildozer
           key: buildozer-${{ hashFiles('buildozer.spec') }}
 
+      - name: Force NDK 25b
+        run: |
+          rm -rf ~/.buildozer/android/platform/android-ndk-r28c
+          echo 'NDK cache cleared'
+
       - name: Build APK
         run: |
           yes | buildozer -v android debug
