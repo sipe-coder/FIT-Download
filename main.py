@@ -109,7 +109,7 @@ def main(page: ft.Page):
 
         opts = {"format": fmt_string(), "outtmpl": outtmpl, "noplaylist": True,
                 "quiet": True, "no_warnings": True, "progress_hooks": [hook],
-                "socket_timeout": 20, "retries": 3, "nocheckcertificate": True}
+                "socket_timeout": 20, "retries": 3, "nocheckcertificate": True, "impersonate": "chrome-131"}
         if is_yt:
             opts["extractor_args"] = {"youtube": {"player_client": ["mweb", "tv", "web_safari"]}}
 
@@ -185,20 +185,29 @@ def main(page: ft.Page):
             page.update()
         return h
 
-    video_btn = ft.ElevatedButton("Видео", bgcolor=C_ACCENT, color=C_INK, on_click=set_video, expand=True)
-    audio_btn = ft.ElevatedButton("Аудио", bgcolor=C_SURFACE, color=C_TEXT, on_click=set_audio, expand=True)
+    video_btn = ft.Container(content=ft.Text("Видео", color=C_INK, weight=ft.FontWeight.BOLD),
+                         bgcolor=C_ACCENT, border_radius=10, padding=ft.padding.symmetric(horizontal=16, vertical=10),
+                         on_click=set_video, expand=True, alignment=ft.alignment.center)
+    audio_btn = ft.Container(content=ft.Text("Аудио", color=C_TEXT, weight=ft.FontWeight.BOLD),
+                         bgcolor=C_SURFACE, border_radius=10, padding=ft.padding.symmetric(horizontal=16, vertical=10),
+                         on_click=set_audio, expand=True, alignment=ft.alignment.center)
 
     quality_buttons = []
     quality_row = ft.Row(spacing=6)
     for q, label in (("480p", "480"), ("720p", "720"), ("1080p", "1080"), ("best", "Макс")):
         a = q == "720p"
-        b = ft.ElevatedButton(label, bgcolor=C_ACCENT if a else C_SURFACE,
-                              color=C_INK if a else C_TEXT, on_click=make_q(q), expand=True)
+        b = ft.Container(content=ft.Text(label, color=C_INK if a else C_TEXT, weight=ft.FontWeight.BOLD),
+                         bgcolor=C_ACCENT if a else C_SURFACE, border_radius=10,
+                         padding=ft.padding.symmetric(horizontal=10, vertical=8),
+                         on_click=make_q(q), expand=True, alignment=ft.alignment.center)
         quality_buttons.append((q, b))
         quality_row.controls.append(b)
 
-    download_btn = ft.ElevatedButton("Скачать", bgcolor=C_ACCENT, color=C_INK,
-                                     on_click=start_download, height=56)
+    download_btn = ft.Container(
+        content=ft.Text("Скачать", color=C_INK, weight=ft.FontWeight.BOLD, size=16),
+        bgcolor=C_ACCENT, border_radius=12, padding=ft.padding.symmetric(horizontal=32, vertical=14),
+        on_click=start_download, alignment=ft.alignment.center,
+    )
 
     def open_settings(e):
         page.dialog = ft.AlertDialog(

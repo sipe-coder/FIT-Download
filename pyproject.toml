@@ -3,7 +3,7 @@ name = "fit-download"
 version = "1.0.0"
 description = "FIT Download — YT/TikTok/VK downloader"
 requires-python = ">=3.9"
-dependencies = ["flet==0.25.2", "yt-dlp"]
+dependencies = ["flet==0.25.2", "yt-dlp", "curl_cffi"]
 
 [tool.flet]
 org = "org.sipe"
