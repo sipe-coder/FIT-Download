@@ -1,0 +1,15 @@
+[project]
+name = "fit-download"
+version = "1.0.0"
+description = "FIT Download — YT/TikTok/VK downloader"
+requires-python = ">=3.9"
+dependencies = ["flet>=0.25.0,<0.26.0", "yt-dlp"]
+
+[tool.flet]
+org = "org.sipe"
+product = "FIT Download"
+company = "FIT"
+copyright = "Copyright (c) 2026"
+
+[tool.flet.app]
+path = "."

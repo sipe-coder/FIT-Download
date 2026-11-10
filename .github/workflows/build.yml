@@ -8,39 +8,38 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: kivy/buildozer:latest
-      options: --user root
     steps:
       - uses: actions/checkout@v4
 
-      - name: Clear buildozer caches
-        run: |
-          rm -rf ~/.buildozer || true
-          rm -rf .buildozer || true
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Build APK with pip patcher
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: 'stable'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Flet
         run: |
-          (while true; do
-            for v in $(find .buildozer -type d -name venv 2>/dev/null); do
-              if [ -f "$v/bin/pip" ] && [ ! -f "$v/.patched" ]; then
-                echo "Patching pip in $v"
-                "$v/bin/pip" install --quiet "pip<24.1" 2>&1 | tail -3 || true
-                touch "$v/.patched"
-                echo "Pip patched to <24.1"
-              fi
-            done
-            sleep 1
-          done) &
-          PATCHER=$!
-          trap "kill $PATCHER 2>/dev/null || true" EXIT
-          yes | buildozer -v android debug
+          pip install --upgrade pip
+          pip install "flet[all]>=0.25.0,<0.26.0"
+
+      - name: Build APK
+        run: flet build apk --verbose
 
       - name: Upload APK
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: FIT-Download-apk
-          path: bin/*.apk
+          path: build/apk/*.apk
           if-no-files-found: warn
           retention-days: 30
