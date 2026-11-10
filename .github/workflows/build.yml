@@ -31,7 +31,7 @@ jobs:
       - name: Install Flet
         run: |
           pip install --upgrade pip
-          pip install "flet[all]>=0.25.0,<0.26.0"
+          pip install "flet[all]==0.25.2"
 
       - name: Build APK
         run: flet build apk --verbose
